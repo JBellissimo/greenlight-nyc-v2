@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Tools for analyzing NYC permit timelines for small businesses."
 readme = "README.md"
 authors = [
-    { name = "Jess Bellissimo", email = "jbellissimo@gmail.com" }
+    { name = "Jess Bellissimo", email = "5438028+JBellissimo@users.noreply.github.com" }
 ]
 requires-python = ">=3.11"
 dependencies = []

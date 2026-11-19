@@ -1,0 +1,48 @@
+level,job_type,borough,review_route,filed,no_permit_yet,share_no_permit_yet,filed_6mo_plus_ago,share_no_permit_yet_if_filed_6mo_plus_ago,low_n
+borough,All,Bronx,All,6847,2409,0.352,3259,0.268,False
+borough,All,Brooklyn,All,16255,5252,0.323,7941,0.24,False
+borough,All,Manhattan,All,25836,5514,0.213,12691,0.13,False
+borough,All,Queens,All,13447,4583,0.341,6428,0.236,False
+borough,All,Staten Island,All,3934,1242,0.316,1903,0.232,False
+citywide,All,All,All,66319,19000,0.286,32222,0.198,False
+job_type,ALT-CO - New Building with Existing Elements to Remain,All,All,582,469,0.806,297,0.667,False
+job_type,Alteration,All,All,59422,13983,0.235,28679,0.152,False
+job_type,Alteration CO,All,All,2685,2004,0.746,1352,0.585,False
+job_type,Full Demolition,All,All,1759,1077,0.612,879,0.385,False
+job_type,New Building,All,All,1871,1467,0.784,1015,0.681,False
+job_type_x_borough,ALT-CO - New Building with Existing Elements to Remain,Bronx,All,17,14,0.824,8,0.625,True
+job_type_x_borough,ALT-CO - New Building with Existing Elements to Remain,Brooklyn,All,240,204,0.85,134,0.746,False
+job_type_x_borough,ALT-CO - New Building with Existing Elements to Remain,Manhattan,All,26,25,0.962,11,0.909,True
+job_type_x_borough,ALT-CO - New Building with Existing Elements to Remain,Queens,All,262,197,0.752,124,0.556,False
+job_type_x_borough,ALT-CO - New Building with Existing Elements to Remain,Staten Island,All,37,29,0.784,20,0.7,False
+job_type_x_borough,Alteration,Bronx,All,5944,1675,0.282,2807,0.2,False
+job_type_x_borough,Alteration,Brooklyn,All,14123,3597,0.255,6837,0.177,False
+job_type_x_borough,Alteration,Manhattan,All,25037,4917,0.196,12272,0.114,False
+job_type_x_borough,Alteration,Queens,All,11240,2988,0.266,5308,0.171,False
+job_type_x_borough,Alteration,Staten Island,All,3078,806,0.262,1455,0.201,False
+job_type_x_borough,Alteration CO,Bronx,All,239,209,0.874,119,0.798,False
+job_type_x_borough,Alteration CO,Brooklyn,All,901,702,0.779,439,0.624,False
+job_type_x_borough,Alteration CO,Manhattan,All,533,366,0.687,277,0.513,False
+job_type_x_borough,Alteration CO,Queens,All,836,597,0.714,438,0.539,False
+job_type_x_borough,Alteration CO,Staten Island,All,176,130,0.739,79,0.557,False
+job_type_x_borough,Full Demolition,Bronx,All,326,220,0.675,152,0.454,False
+job_type_x_borough,Full Demolition,Brooklyn,All,512,316,0.617,283,0.403,False
+job_type_x_borough,Full Demolition,Manhattan,All,149,120,0.805,68,0.618,False
+job_type_x_borough,Full Demolition,Queens,All,540,322,0.596,260,0.346,False
+job_type_x_borough,Full Demolition,Staten Island,All,232,99,0.427,116,0.198,False
+job_type_x_borough,New Building,Bronx,All,321,291,0.907,173,0.827,False
+job_type_x_borough,New Building,Brooklyn,All,479,433,0.904,248,0.819,False
+job_type_x_borough,New Building,Manhattan,All,91,86,0.945,63,0.937,False
+job_type_x_borough,New Building,Queens,All,569,479,0.842,298,0.728,False
+job_type_x_borough,New Building,Staten Island,All,411,178,0.433,233,0.296,False
+job_type_x_review_route,ALT-CO - New Building with Existing Elements to Remain,All,Professional Certification,11,6,0.545,8,0.5,True
+job_type_x_review_route,ALT-CO - New Building with Existing Elements to Remain,All,Standard Plan Examination,571,463,0.811,289,0.671,False
+job_type_x_review_route,Alteration,All,Professional Certification,38072,4647,0.122,18246,0.07,False
+job_type_x_review_route,Alteration,All,Standard Plan Examination,21350,9336,0.437,10433,0.297,False
+job_type_x_review_route,Alteration CO,All,Professional Certification,197,98,0.497,98,0.347,False
+job_type_x_review_route,Alteration CO,All,Standard Plan Examination,2488,1906,0.766,1254,0.604,False
+job_type_x_review_route,Full Demolition,All,Standard Plan Examination,1759,1077,0.612,879,0.385,False
+job_type_x_review_route,New Building,All,Professional Certification,172,45,0.262,80,0.15,False
+job_type_x_review_route,New Building,All,Standard Plan Examination,1699,1422,0.837,935,0.726,False
+review_route,All,All,Professional Certification,38452,4796,0.125,18432,0.072,False
+review_route,All,All,Standard Plan Examination,27867,14204,0.51,13790,0.367,False

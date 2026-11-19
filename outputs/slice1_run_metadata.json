@@ -1,0 +1,122 @@
+{
+  "script": "src/greenlight_nyc_v2/analyze.py",
+  "script_git_version": "d8d16c52515490af82ad57a56b5139a185e64734",
+  "source": {
+    "dataset_id": "w9ak-ipjd",
+    "dataset_name": "DOB NOW: Build - Job Application Filings",
+    "dataset_rows_updated_at_utc": "2026-11-18T22:03:02+00:00",
+    "fetched_at_utc": "2026-11-19T18:54:42+00:00",
+    "window_start": "2025-11-19",
+    "window_end_inclusive": "2026-11-18"
+  },
+  "source_pulls": {
+    "first_permit": {
+      "where": "first_permit_date >= '2025-11-19' AND first_permit_date < '2026-11-19'",
+      "file": "filings_first_permit_2025-11-19_2026-11-18.csv",
+      "rows": 90778,
+      "server_count": 90778
+    },
+    "filed": {
+      "where": "filing_date >= '2025-11-19' AND filing_date < '2026-11-19'",
+      "file": "filings_filed_2025-11-19_2026-11-18.csv",
+      "rows": 156822,
+      "server_count": 156822
+    }
+  },
+  "definitions": {
+    "cohort": "Initial (-I) DOB NOW: Build filings, excluding job type 'No Work', whose first_permit_date falls in the window.",
+    "days": "Calendar days between the date parts of the two timestamps.",
+    "total": "filing_date -> first_permit_date",
+    "review": "filing_date -> approved_date (plan approval). Professional Certification jobs sometimes have no approved_date, so they are under-represented in review and post_approval.",
+    "review_route": "filing_review_type: Standard Plan Examination or Professional Certification.",
+    "post_approval": "approved_date -> first_permit_date",
+    "p90": "90th percentile (linear interpolation): 9 in 10 jobs took this long or less.",
+    "low_n": "Fewer than 30 jobs in the group; treat as unreliable.",
+    "still_waiting": "Initial filings filed in the window, excluding 'No Work', with no first_permit_date as of the download."
+  },
+  "cohort_filters": [
+    {
+      "filter": "rows downloaded",
+      "removed": 0,
+      "remaining": 90778
+    },
+    {
+      "filter": "keep initial filings only (-I); drop -S, -P and other document types",
+      "removed": 30391,
+      "remaining": 60387
+    },
+    {
+      "filter": "drop job type 'No Work'",
+      "removed": 0,
+      "remaining": 60387
+    },
+    {
+      "filter": "drop duplicate job filing numbers (keep most recently updated)",
+      "removed": 0,
+      "remaining": 60387
+    },
+    {
+      "filter": "drop rows missing a filing date",
+      "removed": 1,
+      "remaining": 60386
+    },
+    {
+      "filter": "total: rows without the needed dates",
+      "removed": 0,
+      "remaining": 60386
+    },
+    {
+      "filter": "total: rows with negative days (end before start)",
+      "removed": 0,
+      "remaining": 60386
+    },
+    {
+      "filter": "review: rows without the needed dates",
+      "removed": 8323,
+      "remaining": 52063
+    },
+    {
+      "filter": "review: rows with negative days (end before start)",
+      "removed": 0,
+      "remaining": 52063
+    },
+    {
+      "filter": "post_approval: rows without the needed dates",
+      "removed": 8323,
+      "remaining": 52063
+    },
+    {
+      "filter": "post_approval: rows with negative days (end before start)",
+      "removed": 3,
+      "remaining": 52060
+    }
+  ],
+  "cohort_jobs_with_total_over_365_days": 4825,
+  "still_waiting_filters": [
+    {
+      "filter": "rows downloaded",
+      "removed": 0,
+      "remaining": 156822
+    },
+    {
+      "filter": "keep initial filings only (-I); drop -S, -P and other document types",
+      "removed": 88351,
+      "remaining": 68471
+    },
+    {
+      "filter": "drop job type 'No Work'",
+      "removed": 2152,
+      "remaining": 66319
+    },
+    {
+      "filter": "drop duplicate job filing numbers (keep most recently updated)",
+      "removed": 0,
+      "remaining": 66319
+    },
+    {
+      "filter": "drop rows missing a filing date",
+      "removed": 0,
+      "remaining": 66319
+    }
+  ]
+}

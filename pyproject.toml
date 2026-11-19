@@ -7,7 +7,9 @@ authors = [
     { name = "Jess Bellissimo", email = "5438028+JBellissimo@users.noreply.github.com" }
 ]
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "pandas>=3.1.1",
+]
 
 [project.scripts]
 greenlight-nyc-v2 = "greenlight_nyc_v2:main"

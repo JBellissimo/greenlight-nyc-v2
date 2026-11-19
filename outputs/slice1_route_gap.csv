@@ -1,0 +1,9 @@
+comparison,job_type,pc_n,pc_median_days,pc_p90_days,spe_n,spe_median_days,spe_p90_days,median_gap_days,low_n
+unadjusted (all job types pooled),All,36834,7.0,85.0,23552,103.0,556.0,96.0,False
+within job type,ALT-CO - New Building with Existing Elements to Remain,10,112.0,534.8,409,260.0,613.4,148.0,True
+within job type,Alteration,36453,7.0,80.0,19017,79.0,505.0,72.0,False
+within job type,Alteration CO,152,99.5,360.8,1629,228.0,679.0,128.5,False
+within job type (only Standard Plan Examination jobs),Full Demolition,0,,,1316,,,,
+within job type,New Building,219,97.0,893.6,1181,315.0,979.0,218.0,False
+same job mix: Standard Plan Exam reweighted to Prof. Cert.'s mix,All (shared types),36834,7.0,85.0,22236,80.0,515.0,73.0,False
+same job mix: Prof. Cert. reweighted to Standard Plan Exam's mix,All (shared types),36834,9.0,153.0,22236,99.0,571.0,90.0,False

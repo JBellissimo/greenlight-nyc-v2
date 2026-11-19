@@ -1,6 +1,6 @@
 {
   "script": "src/greenlight_nyc_v2/analyze.py",
-  "script_git_version": "d8d16c52515490af82ad57a56b5139a185e64734",
+  "script_git_version": "49259a1eb98b17bc4ea5e8ac0e85dcd60f011a87",
   "source": {
     "dataset_id": "w9ak-ipjd",
     "dataset_name": "DOB NOW: Build - Job Application Filings",

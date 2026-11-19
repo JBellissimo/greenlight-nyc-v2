@@ -9,6 +9,7 @@
 - **The biggest factor is the review route, not the job type or the borough.**
   - **Professional Certification:** the architect or engineer certifies the plans themselves. The median is **7 days**.
   - **Standard Plan Examination:** a DOB examiner reviews the plans. The median is **103 days**, and the 90th percentile is **556 days**.
+  - Most of this gap remains when you compare jobs of the same type. Section 8 shows that 75–94% of it survives. That still doesn't prove the route *causes* the difference.
 - **Big jobs take much longer.** The median is 294 days for New Buildings and 216 days for Alteration CO (major renovations), versus 16 days for Alterations.
 - **For Standard Plan Examination jobs, the time splits roughly in half.** About half is getting plans approved (median 36 days). The other half is getting from approval to a permit (median 34 days).
 - **The city says most pre-approval time is the applicant fixing problems.** In its own words: *"time with the applicant is typically three times as long as the time the filing is with the Department for review"* ([MMR FY2026, p. 357–358](https://www.nyc.gov/assets/operations/downloads/pdf/mmr2026/dob.pdf)).
@@ -145,7 +146,7 @@ The city publishes **averages** (means) for **fiscal years** (FY2026 = July 2025
 4. **Different time periods.** The city uses fiscal years; we use a rolling year from Nov 2025 to Nov 2026. They overlap by about 7 months.
 
 **Two notes on the city reports:**
-- The city revised one figure between reports. FY2025 DOB NOW resubmission reviews appear as 100,023 in the FY2025 MMR (p. 358) and as 106,759 in the FY2026 MMR. The FY2026 preliminary report says previously published resubmission figures were corrected (p. 7 of the PDF).
+- The city revised one figure between reports. FY2025 DOB NOW resubmission reviews appear as 100,023 in the FY2025 MMR (p. 358) and as 106,759 in the FY2026 MMR. The FY2026 preliminary report says previously published resubmission figures were corrected: *"Fiscal 2025 total from 100,023 to 106,759"* ([PMMR FY2026, p. 325](https://www.nyc.gov/assets/operations/downloads/pdf/pmmr2026/dob.pdf)).
 - The FY2026 numbers in this file come from the full-year FY2026 MMR. They're newer than the preliminary report's figures.
 
 **The old GreenLight site's claims don't hold up.** It said "the city says 22 work days, reality is 47 calendar days" for "ALT-2" permits. DOB NOW has no ALT-2 job type. The city's published figure is filing to approval (25.4 days in FY2026), not to permit. And the typical Alteration is faster than 47 days (median 16 days total), while Standard Plan Examination Alterations are slower (median 79 days).
@@ -162,6 +163,57 @@ What we still don't know:
 - How many objection rounds jobs have.
 - How much post-approval time is real delay versus owner choice.
 - How long the many unfinished jobs will end up taking (slice 2).
+
+## 8. Selection-bias check: is the 7 vs 103 day gap just job mix?
+
+**The worry:** self-certified jobs are mostly simple Alterations, while examiner-reviewed jobs include nearly all New Buildings, major renovations and demolitions. If that were the whole story, the gap would be about job type, not review route.
+
+**The check:** compare the two routes *within the same job type*. Then recompute the overall gap after reweighting one route so its job-type mix matches the other's. Source: [`outputs/slice1_route_gap.csv`](outputs/slice1_route_gap.csv). All figures are total days from filing to first permit.
+
+| Job type | Self-certified: jobs | median | p90 | DOB examiner: jobs | median | p90 | Median gap |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Alteration | 36,453 | 7 | 80 | 19,017 | 79 | 505 | **72** |
+| Alteration CO | 152 | 99.5 | 361 | 1,629 | 228 | 679 | **128.5** |
+| New Building | 219 | 97 | 894 | 1,181 | 315 | 979 | **218** |
+| ALT-CO – NB w/ Existing Elements | 10 ⚠ | 112 | 535 | 409 | 260 | 613 | 148 (too few self-certified jobs to trust) |
+| Full Demolition | 0 | n/a | n/a | 1,316 | 156.5 | 425 | n/a (no self-certified jobs) |
+| **All job types pooled (the original comparison)** | 36,834 | 7 | 85 | 23,552 | 103 | 556 | **96** |
+| Same mix, examiner jobs reweighted to self-certified's mix | 36,834 | 7 | 85 | 22,236 | 80 | 515 | **73** |
+| Same mix, self-certified jobs reweighted to examiner's mix | 36,834 | 9 | 153 | 22,236 | 99 | 571 | **90** |
+
+**In plain terms:**
+- **Most of the gap survives.** For Alterations alone, the gap is 72 days, which is **75% of the original 96**. With the job-type mix equalized, the gap is 73 to 90 days, which is **76% to 94%** of the original. The range depends on which route's mix you use.
+- **About a quarter of the gap, at most, comes from job mix.**
+- **For big jobs, the gap is wider in absolute days:** 128.5 days for Alteration CO and 218 for New Buildings.
+
+**What this check does not rule out:**
+- **The route isn't proven to *cause* the gap.** Even within one job type, the jobs on each route may differ in size, cost, complexity, building type or special approvals. Our download doesn't include those columns.
+- **Applicants choose their route, and some jobs may not be eligible to self-certify.** Either way, harder jobs could cluster in examiner review.
+- **Self-certified jobs aren't free of DOB scrutiny.** DOB says it *"audited nearly 25 percent of professionally certified applications post-approval"* in FY2026 ([MMR FY2026, p. 358](https://www.nyc.gov/assets/operations/downloads/pdf/mmr2026/dob.pdf)). Any audit time after approval isn't counted in our filing-to-permit measure.
+
+**The right wording for public use:** "Within the same job type, self-certified jobs reached a permit much faster than examiner-reviewed jobs: a median of 7 vs 79 days for Alterations." Don't say "self-certifying saves 72 days."
+
+## 9. Source check
+
+Each city figure above comes from one of these sources. Page numbers are the reports' printed page numbers.
+
+| Source | URL | Pages used |
+|---|---|---|
+| Mayor's Management Report, FY2026, Department of Buildings | https://www.nyc.gov/assets/operations/downloads/pdf/mmr2026/dob.pdf | 357–358 |
+| Mayor's Management Report, FY2025, Department of Buildings | https://www.nyc.gov/assets/operations/downloads/pdf/mmr2025/dob.pdf | 357–358 |
+| Preliminary Mayor's Management Report, FY2026, Department of Buildings | https://www.nyc.gov/assets/operations/downloads/pdf/pmmr2026/dob.pdf | 321–322, 325 |
+| NY State Comptroller press release, July 2, 2026 (web page, not a PDF) | https://www.osc.ny.gov/press/releases/2026/07/dinapoli-nyc-department-buildings-meets-critical-goals-lags-lower-priority-issues | n/a |
+
+**The "three times" claim, word for word.** MMR FY2026, the sentence runs from the bottom of p. 357 to the top of p. 358:
+
+> "The time taken for a filing to reach approval is largely driven by how long the applicant is holding the filing while making corrections necessary to achieve approval, and is not under Department control. This time with the applicant is typically three times as long as the time the filing is with the Department for review."
+
+The FY2025 MMR (pp. 357–358) has nearly the same wording ("how long the applicant holds the filing").
+
+**What that sentence does and doesn't support:**
+- **The earlier short version was too loose.** I said "applicants hold filings about 3 times as long as DOB reviews them." The report actually says *typically three times*, and it refers to the time from filing to *approval* only. It isn't about the whole wait to a permit.
+- **It's DOB describing its own process.** The report gives no data, method or job-type breakdown behind "three times", and no performance indicator measures applicant time. Quote it as the city's claim, not as a measured fact.
+- **The FY2026 preliminary report puts it more cautiously** ([PMMR FY2026, p. 321](https://www.nyc.gov/assets/operations/downloads/pdf/pmmr2026/dob.pdf)). It says *"The days-to-approval measure includes both the time an application is with the Department and time with the applicant,"* and that *"Filing complexities and submission quality, as well as resource constraints, contributed to extended plan review times and instances of rejection or resubmission."* It gives no ratio, and it names DOB's own resource limits as one of the causes.
 
 ## How to reproduce
 

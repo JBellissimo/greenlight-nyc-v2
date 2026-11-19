@@ -9,6 +9,9 @@ Reads the files saved by fetch.py and writes three files to outputs/:
                              post_approval  approval date -> first permit date
 - slice1_still_waiting.csv share of jobs filed in the same window that have
                            no permit yet (context, not a wait time)
+- slice1_route_gap.csv      Professional Certification vs Standard Plan
+                           Examination within each job type, and with the
+                           job-type mix held equal (selection-bias check)
 - slice1_run_metadata.json what data went in, every filter and how many rows
                            it removed, and the git commit of this script
 
@@ -149,6 +152,78 @@ def summarize(df: pd.DataFrame, log: list[dict]) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def weighted_quantile(values: pd.Series, weights: pd.Series, q: float) -> float:
+    """Quantile of `values` where each row counts `weights` times (step method)."""
+    order = values.argsort(kind="stable")
+    v = values.to_numpy()[order]
+    w = weights.to_numpy()[order]
+    cum = w.cumsum()
+    return float(v[(cum >= q * cum[-1]).argmax()])
+
+
+def route_gap(df: pd.DataFrame) -> pd.DataFrame:
+    """Compare the two review routes within each job type, then overall.
+
+    The overall route gap mixes two things: the route itself, and the fact that
+    the routes handle different kinds of jobs. Holding job type constant
+    removes the second part (but not other differences, such as job size).
+
+    The "same job mix" rows reweight one route's jobs so its job-type mix
+    matches the other route's, then recompute the median and p90.
+    """
+    pc_name, spe_name = "Professional Certification", "Standard Plan Examination"
+    total = df.dropna(subset=["total"])
+    total = total[total["total"] >= 0]
+    rows = []
+
+    def stats(s: pd.Series, w: pd.Series | None = None) -> dict:
+        if w is None:
+            return {"n": len(s), "median": float(s.median()), "p90": float(s.quantile(0.9))}
+        return {"n": int((w > 0).sum()), "median": weighted_quantile(s, w, 0.5),
+                "p90": weighted_quantile(s, w, 0.9)}
+
+    def add(comparison: str, job_type: str, pc: dict, spe: dict) -> None:
+        rows.append({
+            "comparison": comparison,
+            "job_type": job_type,
+            "pc_n": pc["n"], "pc_median_days": round(pc["median"], 1),
+            "pc_p90_days": round(pc["p90"], 1),
+            "spe_n": spe["n"], "spe_median_days": round(spe["median"], 1),
+            "spe_p90_days": round(spe["p90"], 1),
+            "median_gap_days": round(spe["median"] - pc["median"], 1),
+            "low_n": min(pc["n"], spe["n"]) < LOW_N,
+        })
+
+    pc_all = total[total["review_route"] == pc_name]
+    spe_all = total[total["review_route"] == spe_name]
+    add("unadjusted (all job types pooled)", "All", stats(pc_all["total"]), stats(spe_all["total"]))
+
+    for job_type, g in total.groupby("job_type"):
+        pc = g[g["review_route"] == pc_name]["total"]
+        spe = g[g["review_route"] == spe_name]["total"]
+        if len(pc) and len(spe):
+            add("within job type", job_type, stats(pc), stats(spe))
+        else:
+            only = pc_name if len(pc) else spe_name
+            rows.append({"comparison": f"within job type (only {only} jobs)",
+                         "job_type": job_type, "pc_n": len(pc), "spe_n": len(spe)})
+
+    # Reweight so both routes have the same job-type mix. Job types handled by
+    # only one route get weight 0, since there is nothing to compare them with.
+    pc_mix = pc_all["job_type"].value_counts(normalize=True)
+    spe_mix = spe_all["job_type"].value_counts(normalize=True)
+    shared = pc_mix.index.intersection(spe_mix.index)
+    spe_w = spe_all["job_type"].map((pc_mix / spe_mix).reindex(shared)).fillna(0)
+    pc_w_shared = pc_all["job_type"].isin(shared).astype(float)
+    add("same job mix: Standard Plan Exam reweighted to Prof. Cert.'s mix", "All (shared types)",
+        stats(pc_all["total"], pc_w_shared), stats(spe_all["total"], spe_w))
+    pc_w = pc_all["job_type"].map((spe_mix / pc_mix).reindex(shared)).fillna(0)
+    spe_w_shared = spe_all["job_type"].isin(shared).astype(float)
+    add("same job mix: Prof. Cert. reweighted to Standard Plan Exam's mix", "All (shared types)",
+        stats(pc_all["total"], pc_w), stats(spe_all["total"], spe_w_shared))
+    return pd.DataFrame(rows)
+
+
 def still_waiting(df: pd.DataFrame, window_end: pd.Timestamp) -> pd.DataFrame:
     """Share of jobs filed in the window that have no first permit yet."""
     df = df.copy()
@@ -195,6 +270,8 @@ def main() -> None:
         OUT_DIR / "slice1_durations.csv", index=False, lineterminator="\n")
     waiting.sort_values(sort_cols).to_csv(
         OUT_DIR / "slice1_still_waiting.csv", index=False, lineterminator="\n")
+    route_gap(cohort).to_csv(
+        OUT_DIR / "slice1_route_gap.csv", index=False, lineterminator="\n")
 
     metadata = {
         "script": "src/greenlight_nyc_v2/analyze.py",
@@ -230,6 +307,7 @@ def main() -> None:
     print(city[["measure", "n", "median_days", "p90_days", "mean_days"]].to_string(index=False))
     print(f"Wrote {OUT_DIR / 'slice1_durations.csv'}")
     print(f"Wrote {OUT_DIR / 'slice1_still_waiting.csv'}")
+    print(f"Wrote {OUT_DIR / 'slice1_route_gap.csv'}")
     print(f"Wrote {OUT_DIR / 'slice1_run_metadata.json'}")
 
 

@@ -1,0 +1,17 @@
+[project]
+name = "greenlight-nyc-v2"
+version = "0.1.0"
+description = "Tools for analyzing NYC permit timelines for small businesses."
+readme = "README.md"
+authors = [
+    { name = "Jess Bellissimo", email = "jbellissimo@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+greenlight-nyc-v2 = "greenlight_nyc_v2:main"
+
+[build-system]
+requires = ["uv_build>=0.13.9,<0.14.0"]
+build-backend = "uv_build"
